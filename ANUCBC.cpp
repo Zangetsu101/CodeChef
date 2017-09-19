@@ -42,6 +42,7 @@ int temp[N];
 ll dp[2][N];
 ll transition[N][N];
 ll fact[100001];
+ll inv[100001];
 
 ll modPower(ll a,int b)
 {
@@ -63,9 +64,9 @@ ll modInverse(int a)
 
 ll nCr(int a,int b)
 {
-    ll res=fact[a]*modInverse(fact[b]);
+    ll res=fact[a]*inv[b];
     res%=mod;
-    res*=modInverse(fact[a-b]);
+    res*=inv[a-b];
     res%=mod;
     return res;
 }
@@ -76,9 +77,9 @@ int main()
     cin.tie(0);
 //    freopen("Input.txt","r",stdin);
 //    freopen("Output.txt","w",stdout);
-    fact[0]=1;
+    fact[0]=inv[0]=1;
     for(int i=1;i<100001;i++)
-        fact[i]=(fact[i-1]*i)%mod;
+        fact[i]=(fact[i-1]*i)%mod,inv[i]=modInverse(fact[i]);
     int cases;
     cin>>cases;
     while(cases--)
@@ -97,9 +98,7 @@ int main()
             for(int i=0;i<n;i++)
             {
                 int t=data[i];
-                if(t<0)
-                    t=(abs(t)/m+1)*m+t;
-                temp[t%m]++;
+                temp[((t%m)+m)%m]++;
             }
             for(int i=0;i<m;i++)
             {
